@@ -3,8 +3,10 @@ require "beardley/batik/version"
 module Beardley
   module Batik
 
-    def self.classpath
-      return Dir[Pathname.new(__FILE__).dirname.join("..", "..", "vendor", "java", "*.jar")].collect{ |path| Pathname.new(path) }
+    RjbLoader.before_load do |config|
+      Dir[Pathname.new(__FILE__).dirname.join("..", "..", "vendor", "java", "*.jar")].each do |path|
+        config.classpath << File::PATH_SEPARATOR + File.expand_path(path)
+      end
     end
 
   end
